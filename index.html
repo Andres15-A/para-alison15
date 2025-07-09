@@ -9,7 +9,7 @@
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(to bottom, #ffe6ec, #fff);
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     body::before {
@@ -35,6 +35,8 @@
     .container {
       text-align: center;
       padding: 2rem;
+      position: relative;
+      z-index: 2;
     }
 
     .alison-img {
@@ -98,7 +100,6 @@
       justify-content: center;
       align-items: center;
       z-index: 999;
-      overflow: hidden;
       flex-direction: column;
     }
 
@@ -119,49 +120,39 @@
       to { transform: scale(1); opacity: 1; }
     }
 
-    .fireworks {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-      overflow: hidden;
+    /* corazones flotando */
+    .heart {
+      position: fixed;
+      color: #ff69b4;
+      font-size: 24px;
+      animation: float 10s linear infinite;
+      opacity: 0.8;
+      z-index: 1;
     }
 
-    .firework {
-      position: absolute;
-      border-radius: 50%;
-      width: 10px;
-      height: 10px;
-      border: 1px solid white;
-      background: white;
-      animation: explode 1.5s ease-out forwards;
-      opacity: 1;
-    }
-
-    @keyframes explode {
+    @keyframes float {
       0% {
-        transform: scale(1) translateY(0);
+        transform: translateY(100vh) scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      50% {
         opacity: 1;
-        box-shadow: 0 0 5px rgba(255,255,255,0.5);
       }
       100% {
-        transform: scale(2.5) translateY(-150px);
+        transform: translateY(-10vh) scale(1.2);
         opacity: 0;
-        box-shadow: 0 0 25px rgba(255,255,255,0);
       }
     }
   </style>
 </head>
 <body>
-  <!-- Música -->
   <audio id="miMusica" loop>
     <source src="musica.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Contenido principal -->
   <div class="container">
     <img src="foto1.jpg" alt="Alison" class="alison-img" />
     <h1>Tu amor es mi mayor fortuna</h1>
@@ -169,7 +160,6 @@
     <button id="openLetter">💌 Leer mi carta</button>
   </div>
 
-  <!-- Carta -->
   <div class="letter-modal" id="letterModal">
     <div class="letter">
       <h2>Para ti, Alison</h2>
@@ -181,16 +171,14 @@
       </p>
       <button id="closeLetter">Cerrar</button>
     </div>
-    <div class="fireworks" id="fireworksContainer"></div>
   </div>
 
-  <!-- Script -->
+  <!-- corazones generados -->
   <script>
     const modal = document.getElementById('letterModal');
     const btnOpen = document.getElementById('openLetter');
     const btnClose = document.getElementById('closeLetter');
     const musica = document.getElementById('miMusica');
-    const fireworksContainer = document.getElementById('fireworksContainer');
 
     btnOpen.onclick = () => {
       modal.style.display = 'flex';
@@ -201,30 +189,20 @@
       modal.style.display = 'none';
       musica.pause();
       musica.currentTime = 0;
-      fireworksContainer.innerHTML = '';
     };
 
-    function showFireworks() {
-      let count = 0;
-      const interval = setInterval(() => {
-        for (let i = 0; i < 10; i++) {
-          const spark = document.createElement('div');
-          spark.classList.add('firework');
-          spark.style.left = Math.random() * 100 + '%';
-          spark.style.top = Math.random() * 100 + '%';
-          spark.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
-          fireworksContainer.appendChild(spark);
-          setTimeout(() => spark.remove(), 1500);
-        }
-        count++;
-        if (count >= 5) clearInterval(interval);
-      }, 500);
+    // generar corazones infinitos
+    function crearCorazon() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 8 + Math.random() * 5 + "s";
+      heart.innerText = "💖";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 15000);
     }
 
-    // Fuegos artificiales al cargar la página
-    window.onload = () => {
-      showFireworks();
-    };
+    setInterval(crearCorazon, 300); // cada 0.3s un nuevo corazón
   </script>
 </body>
 </html>
