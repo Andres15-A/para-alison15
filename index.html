@@ -120,7 +120,7 @@
       to { transform: scale(1); opacity: 1; }
     }
 
-    /* corazones flotando */
+    /* Corazones flotantes */
     .heart {
       position: fixed;
       color: #ff69b4;
@@ -149,10 +149,12 @@
   </style>
 </head>
 <body>
+  <!-- Música -->
   <audio id="miMusica" loop>
     <source src="musica.mp3" type="audio/mpeg" />
   </audio>
 
+  <!-- Contenido principal -->
   <div class="container">
     <img src="foto1.jpg" alt="Alison" class="alison-img" />
     <h1>Tu amor es mi mayor fortuna</h1>
@@ -160,6 +162,7 @@
     <button id="openLetter">💌 Leer mi carta</button>
   </div>
 
+  <!-- Carta -->
   <div class="letter-modal" id="letterModal">
     <div class="letter">
       <h2>Para ti, Alison</h2>
@@ -173,7 +176,7 @@
     </div>
   </div>
 
-  <!-- corazones generados -->
+  <!-- Script para corazones y eventos -->
   <script>
     const modal = document.getElementById('letterModal');
     const btnOpen = document.getElementById('openLetter');
@@ -191,7 +194,7 @@
       musica.currentTime = 0;
     };
 
-    // generar corazones infinitos
+    // Corazones flotando
     function crearCorazon() {
       const heart = document.createElement("div");
       heart.className = "heart";
@@ -202,7 +205,7 @@
       setTimeout(() => heart.remove(), 15000);
     }
 
-    setInterval(crearCorazon, 300); // cada 0.3s un nuevo corazón
+    setInterval(crearCorazon, 300); // cada 0.3 segundos
   </script>
 </body>
 </html>
