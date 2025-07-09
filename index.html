@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para Alison 💘</title>
+
+  <!-- CSS INCRUSTADO -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #ffe6ec, #fff);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(circle, rgba(255,192,203,0.3) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,182,193,0.4) 2px, transparent 2px);
+      background-size: 80px 80px, 120px 120px;
+      animation: sparkle 10s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes sparkle {
+      0% { background-position: 0 0, 0 0; }
+      100% { background-position: 80px 80px, 120px 120px; }
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .alison-img {
+      width: 250px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px pink;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #e91e63;
+    }
+
+    .frase {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      animation: glowText 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowText {
+      from {
+        text-shadow: 0 0 5px #ff80ab, 0 0 10px #ff80ab;
+      }
+      to {
+        text-shadow: 0 0 20px #ff4081, 0 0 30px #ff4081;
+      }
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #ff80ab;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      animation: pulse 2s infinite;
+    }
+
+    button:hover {
+      background: #ec407a;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 128, 171, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 15px rgba(255, 128, 171, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 128, 171, 0);
+      }
+    }
+
+    .letter-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 192, 203, 0.95);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .letter {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+      z-index: 2;
+      position: relative;
+      animation: popUp 0.5s ease-out;
+    }
+
+    @keyframes popUp {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .fireworks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .firework {
+      position: absolute;
+      border-radius: 50%;
+      width: 5px;
+      height: 5px;
+      background: white;
+      animation: explode 1s ease-out forwards;
+    }
+
+    @keyframes explode {
+      0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0.5) translateY(-100px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio id="miMusica" loop>
+    <source src="musica.mp3" type="audio/mpeg" />
+  </audio>
+
+  <div class="container">
+    <img src="foto1.jpg" alt="Alison" class="alison-img" />
+    <h1>Tu amor es mi mayor fortuna</h1>
+    <p class="frase">Pase lo que pase, mi corazón siempre te elegirá a ti 💖</p>
+    <button id="openLetter">💌 Leer mi carta</button>
+  </div>
+
+  <div class="letter-modal" id="letterModal">
+    <div class="letter">
+      <h2>Para ti, Alison</h2>
+      <p>
+        Alison, cada latido mío te pertenece. <br>
+        Esta carta guarda lo que a veces no me atrevo a decirte en voz alta: <br>
+        eres lo mejor que me pasó en esta vida. <br>
+        <strong>Te quiero con cada parte de mi alma 💖</strong>
+      </p>
+      <button id="closeLetter">Cerrar</button>
+    </div>
+    <div class="fireworks" id="fireworksContainer"></div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('letterModal');
+    const btnOpen = document.getElementById('openLetter');
+    const btnClose = document.getElementById('closeLetter');
+    const musica = document.getElementById('miMusica');
+    const fireworksContainer = document.getElementById('fireworksContainer');
+
+    btnOpen.onclick = () => {
+      modal.style.display = 'flex';
+      musica.play();
+      showFireworks();
+    };
+
+    btnClose.onclick = () => {
+      modal.style.display = 'none';
+      musica.pause();
+      musica.currentTime = 0;
+      fireworksContainer.innerHTML = '';
+    };
+
+    function showFireworks() {
+      for (let i = 0; i < 30; i++) {
+        const spark = document.createElement('div');
+        spark.classList.add('firework');
+        spark.style.left = Math.random() * 100 + '%';
+        spark.style.top = Math.random() * 100 + '%';
+        spark.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        fireworksContainer.appendChild(spark);
+        setTimeout(() => spark.remove(), 1000);
+      }
+    }
+  </script>
+</body>
+</html>
